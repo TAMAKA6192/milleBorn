@@ -1,92 +1,82 @@
-namespace milleBorn
-{
-    public enum CardType
-    {
-        // Distance Cards (ˆÚ“®ƒJ[ƒh)
-        Distance25,
-        Distance50,
-        Distance75,
-        Distance100,
-        Distance200,
+ï»¿namespace milleBorn;
 
-        // Hazard Cards (–WŠQƒJ[ƒh)
-        Accident,      // Ž–ŒÌ
-        OutOfGas,      // ƒKƒXŒ‡
-        FlatTire,      // ƒpƒ“ƒN
-        SpeedLimit,    // ‘¬“x§ŒÀ
-        Stop,          // ’âŽ~
+public enum CardType {
+    // Distance Cards (ç§»å‹•ã‚«ãƒ¼ãƒ‰)
+    Distance25,
+    Distance50,
+    Distance75,
+    Distance100,
+    Distance200,
 
-        // Remedy Cards (C—ƒJ[ƒh)
-        Repairs,       // C—
-        Gasoline,      // ƒKƒ\ƒŠƒ“
-        SpareTire,     // ƒXƒyƒAƒ^ƒCƒ„
-        EndOfLimit,    // ‘¬“x§ŒÀ‰ðœ
-        Go,            // o”­
+    // Hazard Cards (å¦¨å®³ã‚«ãƒ¼ãƒ‰)
+    Accident,      // äº‹æ•…
+    OutOfGas,      // ã‚¬ã‚¹æ¬ 
+    FlatTire,      // ãƒ‘ãƒ³ã‚¯
+    SpeedLimit,    // é€Ÿåº¦åˆ¶é™
+    Stop,          // åœæ­¢
 
-        // Safety Cards (ˆÀ‘SƒJ[ƒh)
-        DrivingAce,    // ‰^“]‚Ì’Bl (Ž–ŒÌ–hŽ~)
-        ExtraTank,     // —\”õƒ^ƒ“ƒN (ƒKƒXŒ‡–hŽ~)
-        PunctureProof, // ƒpƒ“ƒN–hŽ~
-        RightOfWay     // —DæŒ  (’âŽ~E‘¬“x§ŒÀ–hŽ~)
+    // Remedy Cards (ä¿®ç†ã‚«ãƒ¼ãƒ‰)
+    Repairs,       // ä¿®ç†
+    Gasoline,      // ã‚¬ã‚½ãƒªãƒ³
+    SpareTire,     // ã‚¹ãƒšã‚¢ã‚¿ã‚¤ãƒ¤
+    EndOfLimit,    // é€Ÿåº¦åˆ¶é™è§£é™¤
+    Go,            // å‡ºç™º
+
+    // Safety Cards (å®‰å…¨ã‚«ãƒ¼ãƒ‰)
+    DrivingAce,    // é‹è»¢ã®é”äºº (äº‹æ•…é˜²æ­¢)
+    ExtraTank,     // äºˆå‚™ã‚¿ãƒ³ã‚¯ (ã‚¬ã‚¹æ¬ é˜²æ­¢)
+    PunctureProof, // ãƒ‘ãƒ³ã‚¯é˜²æ­¢
+    RightOfWay     // å„ªå…ˆæ¨© (åœæ­¢ãƒ»é€Ÿåº¦åˆ¶é™é˜²æ­¢)
+}
+
+public class Card {
+    public CardType Type { get; }
+    public string Name { get; }
+    public int Distance { get; }
+    public CardCategory Category { get; }
+
+    public Card(CardType type, string name, int distance, CardCategory category) {
+        Type = type;
+        Name = name;
+        Distance = distance;
+        Category = category;
     }
 
-    public class Card
-    {
-        public CardType Type { get; }
-        public string Name { get; }
-        public int Distance { get; }
-        public CardCategory Category { get; }
+    public override string ToString() => Name;
+}
 
-        public Card(CardType type, string name, int distance, CardCategory category)
-        {
-            Type = type;
-            Name = name;
-            Distance = distance;
-            Category = category;
-        }
+public enum CardCategory {
+    Distance,
+    Hazard,
+    Remedy,
+    Safety
+}
 
-        public override string ToString() => Name;
-    }
+public static class CardFactory {
+    public static Card CreateCard(CardType type) => type switch {
+        CardType.Distance25 => new Card(type, "25km", 25, CardCategory.Distance),
+        CardType.Distance50 => new Card(type, "50km", 50, CardCategory.Distance),
+        CardType.Distance75 => new Card(type, "75km", 75, CardCategory.Distance),
+        CardType.Distance100 => new Card(type, "100km", 100, CardCategory.Distance),
+        CardType.Distance200 => new Card(type, "200km", 200, CardCategory.Distance),
 
-    public enum CardCategory
-    {
-        Distance,
-        Hazard,
-        Remedy,
-        Safety
-    }
+        CardType.Accident => new Card(type, "äº‹æ•…", 0, CardCategory.Hazard),
+        CardType.OutOfGas => new Card(type, "ã‚¬ã‚¹æ¬ ", 0, CardCategory.Hazard),
+        CardType.FlatTire => new Card(type, "ãƒ‘ãƒ³ã‚¯", 0, CardCategory.Hazard),
+        CardType.SpeedLimit => new Card(type, "é€Ÿåº¦åˆ¶é™", 0, CardCategory.Hazard),
+        CardType.Stop => new Card(type, "åœæ­¢", 0, CardCategory.Hazard),
 
-    public static class CardFactory
-    {
-        public static Card CreateCard(CardType type)
-        {
-            return type switch
-            {
-                CardType.Distance25 => new Card(type, "25km", 25, CardCategory.Distance),
-                CardType.Distance50 => new Card(type, "50km", 50, CardCategory.Distance),
-                CardType.Distance75 => new Card(type, "75km", 75, CardCategory.Distance),
-                CardType.Distance100 => new Card(type, "100km", 100, CardCategory.Distance),
-                CardType.Distance200 => new Card(type, "200km", 200, CardCategory.Distance),
+        CardType.Repairs => new Card(type, "ä¿®ç†", 0, CardCategory.Remedy),
+        CardType.Gasoline => new Card(type, "ã‚¬ã‚½ãƒªãƒ³", 0, CardCategory.Remedy),
+        CardType.SpareTire => new Card(type, "ã‚¹ãƒšã‚¢ã‚¿ã‚¤ãƒ¤", 0, CardCategory.Remedy),
+        CardType.EndOfLimit => new Card(type, "é€Ÿåº¦åˆ¶é™è§£é™¤", 0, CardCategory.Remedy),
+        CardType.Go => new Card(type, "å‡ºç™º", 0, CardCategory.Remedy),
 
-                CardType.Accident => new Card(type, "Ž–ŒÌ", 0, CardCategory.Hazard),
-                CardType.OutOfGas => new Card(type, "ƒKƒXŒ‡", 0, CardCategory.Hazard),
-                CardType.FlatTire => new Card(type, "ƒpƒ“ƒN", 0, CardCategory.Hazard),
-                CardType.SpeedLimit => new Card(type, "‘¬“x§ŒÀ", 0, CardCategory.Hazard),
-                CardType.Stop => new Card(type, "’âŽ~", 0, CardCategory.Hazard),
+        CardType.DrivingAce => new Card(type, "é‹è»¢ã®é”äºº", 0, CardCategory.Safety),
+        CardType.ExtraTank => new Card(type, "äºˆå‚™ã‚¿ãƒ³ã‚¯", 0, CardCategory.Safety),
+        CardType.PunctureProof => new Card(type, "ãƒ‘ãƒ³ã‚¯é˜²æ­¢", 0, CardCategory.Safety),
+        CardType.RightOfWay => new Card(type, "å„ªå…ˆæ¨©", 0, CardCategory.Safety),
 
-                CardType.Repairs => new Card(type, "C—", 0, CardCategory.Remedy),
-                CardType.Gasoline => new Card(type, "ƒKƒ\ƒŠƒ“", 0, CardCategory.Remedy),
-                CardType.SpareTire => new Card(type, "ƒXƒyƒAƒ^ƒCƒ„", 0, CardCategory.Remedy),
-                CardType.EndOfLimit => new Card(type, "‘¬“x§ŒÀ‰ðœ", 0, CardCategory.Remedy),
-                CardType.Go => new Card(type, "o”­", 0, CardCategory.Remedy),
-
-                CardType.DrivingAce => new Card(type, "‰^“]‚Ì’Bl", 0, CardCategory.Safety),
-                CardType.ExtraTank => new Card(type, "—\”õƒ^ƒ“ƒN", 0, CardCategory.Safety),
-                CardType.PunctureProof => new Card(type, "ƒpƒ“ƒN–hŽ~", 0, CardCategory.Safety),
-                CardType.RightOfWay => new Card(type, "—DæŒ ", 0, CardCategory.Safety),
-
-                _ => throw new ArgumentException($"Unknown card type: {type}")
-            };
-        }
-    }
+        _ => throw new ArgumentException($"Unknown card type: {type}")
+    };
 }
